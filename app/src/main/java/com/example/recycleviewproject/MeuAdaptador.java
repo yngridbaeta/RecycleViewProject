@@ -43,17 +43,26 @@ import java.util.List;
         holder.tvNomeItem.setText(userData.getNome());
         holder.tvEmailItem.setText(userData.getEmail());
 
+        //esa parte será acionada somente quando um dos botoes forem "acionados"
         holder.itemView.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 itemClickListener.OnItemClick(position, userData);
             }
         }));
-    }
 
+        holder.tvDeleteItem.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                listaUsuario.remove(position);
+                notifyDataSetChanged();
+            }});
+        }
+
+    //retorna quantos elementos tem-ne na lista de usuários
     @Override
     public int getItemCount() {
-        return 0;
+        return listaUsuario.size();
     }
 
     public static class MyHolder extends RecyclerView.ViewHolder {
@@ -70,5 +79,14 @@ import java.util.List;
         }
     }
 
-    public void updateVazio(){}
+    public void setItemClickListener(ItemClickListener itemClickListener){
+        this.itemClickListener = itemClickListener;
+    }
+
+    public void UpdateData(int position, Usuario userData){
+        listaUsuario.remove(position);
+        listaUsuario.add(userData);
+        notifyItemChanged(position);
+        notifyDataSetChanged();
+    }
  }
